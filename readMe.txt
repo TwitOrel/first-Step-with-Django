@@ -10,7 +10,12 @@ http://127.0.0.1:8000/
                             greet/
                             
                             /users/
+<<<<<<< HEAD
                                     <int>     
                                     
                         # for admin
                         admin/
+=======
+                                    <int>           
+                            /todos/
+>>>>>>> 2dab28e (updating ReadMe)
