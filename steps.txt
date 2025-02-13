@@ -3,7 +3,7 @@
 	# מעבר לתיקייה בשולחן העבודה
 	cd Desktop\DjangoProjects 
 
-	# יצירת פרויקט חדש בשם myproject
+	# יצירת פרויקט חדש בשם my project
 	django-admin startproject myFirstProject  
 
 	# כניסה לתיקייה של הפרויקט

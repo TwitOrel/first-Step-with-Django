@@ -22,8 +22,6 @@ from api.views import home
 urlpatterns = [
     # adding paths of API
     path('api/', include('api.urls')),
-
-    
     path('admin/', admin.site.urls),
     path('', home, name='home'),
 ]

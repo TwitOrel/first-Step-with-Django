@@ -3,9 +3,12 @@
 }
 
 html{
+    height: 100%;
     margin: 0;
     background-color: #222025;
     font-family: Roboto, sans-serif;
+    background: url('../style/beckground_image.jpeg') no-repeat center center fixed;
+    background-size: cover;
 }
 
 body{
