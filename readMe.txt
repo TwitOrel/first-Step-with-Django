@@ -14,14 +14,9 @@ http://127.0.0.1:8000/
                             greet/
                             
                             /users/
-<<<<<<< HEAD
-                                    <int>           
-                            /todos/
-=======
                                     <int>     
+                            /todos/
+                                    <int>           
                                     
                         # for admin
                         admin/
-                                    <int>           
-                            /todos/
->>>>>>> main
