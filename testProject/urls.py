@@ -23,5 +23,6 @@ urlpatterns = [
     # adding paths of API
     path('api/', include('api.urls')),
     path('admin/', admin.site.urls),
+    path('api/users/', include('users.urls')),
     path('', home, name='home'),
 ]

@@ -35,27 +35,39 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.staticfiles',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.admin',
+    'django.contrib.auth',
 
     # Django REST Framework
     'rest_framework',
+    'users',
     'api',
 ]
+CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:8000"]
+CSRF_COOKIE_SECURE = False
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',  ❌ השבת זמנית את השורה הזו
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db' 
+SESSION_COOKIE_NAME = 'sessionid' 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False 
+SESSION_COOKIE_AGE = 1209600 
+SESSION_SAVE_EVERY_REQUEST = True 
+
+
 
 ROOT_URLCONF = 'testProject.urls'
 

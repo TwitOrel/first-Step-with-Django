@@ -9,7 +9,7 @@ class User(models.Model):
     age = models.IntegerField() 
 
     def __str__(self):
-        return f"{self.name} ({self.age})"
+        return f"{self.name} and his age: {self.age}"
 
 class Todo(models.Model):
     task = models.CharField(max_length=255)  
