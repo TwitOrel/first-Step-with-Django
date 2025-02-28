@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My ToDo List</title>
+    <link rel="stylesheet" href="{% static 'css/todo.css' %}">
+</head>
+<body>
+    <main>
+        <header>
+          <button class="logout-button" id="logout-button" onclick="goBackHome()">Logout</button>
+          <div class="username"></div>
+          <h1>Todo List</h1>
+          <h2>Things I need to do!</h2>
+          <div>
+            <label>
+              <input placeholder="Write something..." />
+            </label>
+            <button onclick="createTodoItem()">Add</button>
+          </div>
+        </header>
+        <article id="todo-list">
+  
+        </article>
+    </main>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

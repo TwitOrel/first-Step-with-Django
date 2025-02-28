@@ -5,29 +5,34 @@ from django.middleware.csrf import CsrfViewMiddleware
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
 from django.contrib.auth.tokens import default_token_generator
+from rest_framework.decorators import permission_classes
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 
+
+
+def login_view(request):
+    return render(request, "login.html")
 
 @api_view(['POST'])
 def reset_password_confirm(request, uidb64, token):
-    """שינוי סיסמה לאחר לחיצה על הלינק באימייל"""
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = get_object_or_404(User, pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         return Response({'error': 'Invalid reset link'}, status=400)
 
-    # בדיקת חוקיות הטוקן
     if not default_token_generator.check_token(user, token):
         return Response({'error': 'Invalid or expired reset link'}, status=400)
 
@@ -87,8 +92,9 @@ def register(request):
 
 ## login
 @api_view(['POST'])
+@csrf_exempt
+@permission_classes([])
 def login_user(request):
-    """ התחברות משתמש ושמירת Session """
     identifier = request.data.get('identifier')
     password = request.data.get('password')
 
@@ -97,7 +103,13 @@ def login_user(request):
     if user and user.check_password(password): 
         login(request, user)  
         request.session.save() 
-        return Response({'message': 'Login successful'})
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'message': 'Login successful',
+            'token': token.key
+        })
 
     return Response({'error': 'Invalid credentials'}, status=400)
 
@@ -105,7 +117,6 @@ def login_user(request):
 ## check conecting
 @api_view(['GET'])
 def check_authentication(request):
-    """ בדיקה אם המשתמש מחובר """
     if request.user.is_authenticated:
         return Response({'authenticated': True, 'username': request.user.username})
     return Response({'authenticated': False})

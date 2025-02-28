@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Todo Application</title>
+    <link rel="stylesheet" href="{% static 'css/todo.css' %}">
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Todo List</h1>
+        <h2>Things I need to do!</h2>
+        <div>
+          <label>
+            <input placeholder="Write something..." />
+          </label>
+          <button onclick="createTodoItem()">Add</button>
+        </div>
+      </header>
+      <article id="todo-list">
+
+      </article>
+    </main>
+    <script src="{% static 'js/index.js' %}"></script>
+  </body>
+</html>

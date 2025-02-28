@@ -7,7 +7,7 @@ html{
     margin: 0;
     background-color: #222025;
     font-family: Roboto, sans-serif;
-    background: url('../style/beckground_image.jpeg') no-repeat center center fixed;
+    background: url('../style/index.background_image.jpeg') no-repeat center center fixed;
     background-size: cover;
 }
 
@@ -19,23 +19,19 @@ body{
 h1{
     font-size: 3em;
     font-weight: bold;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 
 h2{
     font-size: 2em;
-
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 
-input{
-    background-color: #2E2D31;
-    border: unset;
-    color: white;
-    outline: unset;
-    padding: 1.2em;
-    border-radius: 5px;
-    min-width: 320px;
-    text-indent: 1.55em; 
-    margin: 1em;
+p{
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
 }
 
 button{
@@ -68,33 +64,4 @@ figure{
     padding: 1em;
     border-radius: 5px;
     position: relative;
-}
-.toggle-todo{
-    background-color: #414141;
-    width: 100%;
-    font-size: 20px;
-    font-weight: bold;
-}
-.remove-todo{
-    position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #414141;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border-bottom-left-radius: 5px;
-    border-top-right-radius: 5px;
-    font-size: 1.2em;
-    font-weight: bold;
-}
-.remove-todo:hover{
-    background-color: red;
-}
-.completed{
-    color: greenyellow;
-    text-decoration: line-through;
 }
