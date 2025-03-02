@@ -19,6 +19,7 @@ from django.urls import reverse
 from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 
 
 
@@ -26,6 +27,7 @@ def login_view(request):
     return render(request, "login.html")
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password_confirm(request, uidb64, token):
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
@@ -47,8 +49,8 @@ def reset_password_confirm(request, uidb64, token):
     return Response({'message': 'Password successfully reset'})
 
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def reset_password_request(request):
-    """שליחת לינק לאיפוס סיסמה (ללא מייל, רק הדפסה)"""
     email = request.data.get('email')
 
     try:
@@ -59,16 +61,41 @@ def reset_password_request(request):
     # יצירת לינק לאיפוס סיסמה
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
-    reset_link = request.build_absolute_uri(reverse('reset_password_confirm', kwargs={'uidb64': uid, 'token': token}))
+    # בניית הלינק החדש - שולח לדף login עם פרמטרים ב-URL
+    reset_link = request.build_absolute_uri(
+        reverse('login') + f'?reset=1&uidb64={uid}&token={token}'
+    )
 
-    # הדפסת הלינק לטרמינל במקום לשלוח מייל
-    print(f"\n🔗 Password Reset Link: {reset_link}\n")
+    # print(f"\n🔗 Password Reset Link: {reset_link}\n") # can print the link to terminal if mail doesnt working
+    subject = 'Reset Your Password - Todo List'
+    message = f"""
+    Hi {user.username},
 
-    return Response({'message': 'Password reset link generated (check terminal)'})
+    We received a request to reset your password for your Todo List account.
+
+    Click the link below to reset your password:
+    {reset_link}
+
+    If you didn't request this, please ignore this email.
+
+    Thanks,
+    The Todo List Team
+    """
+
+    send_mail(
+        subject,
+        message,
+        'oreltwito3@gmail.com', 
+        [email],
+        fail_silently=False,
+    )
+
+    return Response({'message': 'Password reset link generated (check email)'})
 
 
 ## register
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register(request):
     username = request.data.get('username')
     email = request.data.get('email')
@@ -92,8 +119,7 @@ def register(request):
 
 ## login
 @api_view(['POST'])
-@csrf_exempt
-@permission_classes([])
+@permission_classes([AllowAny])
 def login_user(request):
     identifier = request.data.get('identifier')
     password = request.data.get('password')

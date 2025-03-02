@@ -75,7 +75,6 @@ const formatDate = (dateString) => {
     return `${day}-${month}-${year}`;
 };
 
-
 const toggleTodoItem = async (id) => {
     try {
         const response = await fetch(`/api/todos/${id}/`, {
@@ -112,7 +111,6 @@ const toggleTodoItem = async (id) => {
         console.error('Error updating todo:', error);
     }
 }
-
 
 const createTodoItem = async () => {
     const text = inputElement.value;
@@ -151,6 +149,45 @@ const createTodoItem = async () => {
     }
     renderToDoList();
     inputElement.value = "";
+}
+
+//TODO לא סידרתי כתובת ופנוקציה למחיקת משתמש
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('delete-account-button').addEventListener('click', deleteAccountButton);
+});
+
+function deleteAccountButton() {
+    const password = prompt("Please enter your password to confirm account deletion:");
+    if (!password) {
+        alert("Account deletion cancelled.");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    fetch("/api/users/delete-account/", {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Token ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ password: password }) 
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Your account and all your tasks have been deleted successfully.");
+            localStorage.clear(); 
+            window.location.href = "/login/"; 
+        } else {
+            return response.json().then(data => {
+                alert(data.error || "Failed to delete account. Please check your password.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Sorry but yet, no one allowd to leave us (עוד לא עשיתי את המחיקה).");
+    });
 }
 
 renderToDoList();

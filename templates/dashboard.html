@@ -6,12 +6,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My ToDo List</title>
-    <link rel="stylesheet" href="{% static 'css/todo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
     <main>
         <header>
-          <button class="logout-button" id="logout-button" onclick="goBackHome()">Logout</button>
+          <button class="logout-button" id="logout-button" onclick="goBackHome()">🚪 Logout</button>
           <div class="username"></div>
           <h1>Todo List</h1>
           <h2>Things I need to do!</h2>
@@ -22,6 +22,7 @@
             <button onclick="createTodoItem()">Add</button>
           </div>
         </header>
+        <button class="delete-account-button" id="delete-account-button">❌ Delete Account</button>
         <article id="todo-list">
   
         </article>

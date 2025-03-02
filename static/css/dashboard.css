@@ -23,11 +23,11 @@ h1{
 }
 .username {
     position: absolute;
-    top: 90px; /* מרחק מהחלק העליון */
-    right: 30px; /* מרחק מהצד הימני */
-    font-size: 35px; /* אם צריך */
-    font-weight: bold; /* אופציונלי */
-    color: rgb(19, 210, 89); /* שיתאים לרקע */
+    top: 90px;
+    right: 30px; 
+    font-size: 35px; 
+    font-weight: bold;
+    color: rgb(19, 210, 89);
     text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8);
 }
 
@@ -122,4 +122,21 @@ figure{
     font-size: 14px;
     width: 150px;
     height: 50px;
+}
+
+.delete-account-button {
+    position: absolute;
+    bottom: 30px;
+    left: 30px;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 150px;
+    height: 50px;
+}
+
+.delete-account-button:hover {
+    background-color: red;
 }
