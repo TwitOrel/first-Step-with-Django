@@ -1,27 +1,22 @@
 {% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Todo Application</title>
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
-  </head>
-  <body>
-    <main>
-      <header>
-        <h1>Todo List</h1>
-        <h2>Things I need to do!</h2>
-        <div>
-          <label>
-            <input placeholder="Write something..." />
-          </label>
-          <button onclick="createTodoItem()">Add</button>
-        </div>
-      </header>
-      <article id="todo-list">
 
-      </article>
-    </main>
-    <script src="{% static 'js/index.js' %}"></script>
-  </body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - My Project</title>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to My Project</h1>
+        <p>Select an option:</p>
+        <div class="button-container">
+            <a href="/login/"><button>Todo List</button></a> 
+            <a href="/admin/" class="admin-button"><button>Admin</button></a>
+        </div>
+    </div>
+</body>
 </html>
