@@ -1,0 +1,57 @@
+adding user + CSRFToken and check that all working   "8 - 40"   lines
+adding forgot password opsion and it let reset password   "42 - 56"   lines
+
+
+
+
+
+
+    יצירת משתמש לדוגמה
+    curl -X POST http://127.0.0.1:8000/api/users/register/ \
+    -H "Content-Type: application/json" \
+    -d '{"username": "testuser", "email": "testuser@example.com", "password": "test1234"}'
+
+    בדיקה אם המשתמש מחובר
+    curl -X GET http://127.0.0.1:8000/api/users/check-auth/
+
+    התחברות
+    curl -X POST http://127.0.0.1:8000/api/users/login/ \
+    -H "Content-Type: application/json" \
+    -d '{"identifier": "testuser", "password": "test1234"}' \
+    -c cookies.txt
+
+    בדיקה אם המשתמש מחובר
+    curl -X GET http://127.0.0.1:8000/api/users/check-auth/ \
+    -b cookies.txt
+
+    קבלת CSRF token ושמירתו
+
+    curl -X GET http://127.0.0.1:8000/api/users/get-csrf/ \
+    -b cookies.txt -c cookies.txt
+
+    התנתקות 
+    ניקח את הCSRFToken ונשתמש בוא להתנתק
+    curl -X POST http://127.0.0.1:8000/api/users/logout/ \
+    -H "X-CSRFToken: < CSRFToken >" \
+    -b cookies.txt
+
+    בדיקה שהמתמש לא מחובר
+    curl -X GET http://127.0.0.1:8000/api/users/check-auth/ \
+    -b cookies.txt
+
+שליחת בקשה שכחתי סיסמה
+curl -X POST http://127.0.0.1:8000/api/users/forgot-password/ \
+-H "Content-Type: application/json" \
+-d '{"email": "testuser@example.com"}'
+
+בטרמינל של דג'נגו נקבל ךינק לאיפוס סיסמה
+curl -X POST < reset_link > \
+-H "Content-Type: application/json" \
+-d '{"password": "newpassword123"}'
+
+נוודא שהסיסמה החדשה עובדת
+curl -X POST http://127.0.0.1:8000/api/users/login/ \
+-H "Content-Type: application/json" \
+-d '{"identifier": "testuser", "password": "newpassword123"}' \
+-c cookies.txt
+
