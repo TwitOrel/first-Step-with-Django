@@ -1,10 +1,28 @@
-const todoListElements = document.getElementById('todo-list')
-const inputElement = document.querySelector('input')
+const todoListElements = document.getElementById('todo-list');
+const inputElement = document.querySelector('input');
+const token = localStorage.getItem("token");
+
+document.addEventListener('DOMContentLoaded', function() {
+    const username = localStorage.getItem('username') || 'Guest';
+    document.querySelector('.username').innerText = username;
+});
+const getAuthHeaders = () => {
+    return {
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${token}`
+    };
+}
+
+const goBackHome = async () => {
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+}
 
 const renderToDoList = async () => {
     try {
-        // Fetch the todo list from the backend
-        const response = await fetch('/api/todos/');
+        const response = await fetch('/api/todos/', {
+            headers: getAuthHeaders()
+        });
         if (!response.ok) {
             console.error('Failed to fetch todos:', response.statusText);
             return;
@@ -13,12 +31,10 @@ const renderToDoList = async () => {
         const todos = await response.json();
         let todosComponents = '';
 
-        // Generate HTML for each todo item
         todos.forEach(todo => {
             todosComponents += createTodoCompenent(todo);
         });
 
-        // Render the list to the DOM
         todoListElements.innerHTML = todosComponents;
     } catch (error) {
         console.error('Error fetching todos:', error);
@@ -38,17 +54,14 @@ const createTodoCompenent = (todo) => {
 
 const removeTodoById = async (id) => {
     try {
-        // Send a DELETE request to the Django API
         const response = await fetch(`/api/todos/${id}/`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: getAuthHeaders() 
         });
 
         if (response.ok) {
             console.log(`Todo item with ID ${id} deleted successfully.`);
-            renderToDoList();  // Refresh the list to show the updated tasks
+            renderToDoList();  
         } else {
             console.error('Failed to delete todo:', response.statusText);
         }
@@ -62,15 +75,11 @@ const formatDate = (dateString) => {
     return `${day}-${month}-${year}`;
 };
 
-
 const toggleTodoItem = async (id) => {
     try {
-        // Fetch the current task from the database
         const response = await fetch(`/api/todos/${id}/`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
+            headers: getAuthHeaders() 
         });
 
         if (!response.ok) {
@@ -79,15 +88,11 @@ const toggleTodoItem = async (id) => {
         }
         const todo = await response.json();
 
-        // Toggle the completion status
         const updatedStatus = !todo.completed;
         
-        // Send the PUT request to update the status in the database
         const updateResponse = await fetch(`/api/todos/${id}/`, {
             method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify({
                 task: todo.task,
                 completed: updatedStatus,
@@ -98,7 +103,7 @@ const toggleTodoItem = async (id) => {
 
         if (updateResponse.ok) {
             console.log('Todo item updated successfully.');
-            renderToDoList();  // Refresh the list after updating
+            renderToDoList();  
         } else {
             console.error('Failed to update todo:', updateResponse.statusText);
         }
@@ -106,7 +111,6 @@ const toggleTodoItem = async (id) => {
         console.error('Error updating todo:', error);
     }
 }
-
 
 const createTodoItem = async () => {
     const text = inputElement.value;
@@ -116,11 +120,10 @@ const createTodoItem = async () => {
 
     const today = new Date();
     const day = String(today.getDate()).padStart(2, '0');
-    const month = String(today.getMonth() + 1).padStart(2, '0');  // Months are zero-based
+    const month = String(today.getMonth() + 1).padStart(2, '0'); 
     const year = today.getFullYear();
     const formattedDate = `${day}-${month}-${year}`;
 
-    // Get current time in HH:MM:SS format
     const formattedTime = today.toLocaleTimeString('en-GB'); 
 
     todoItem = {
@@ -130,12 +133,9 @@ const createTodoItem = async () => {
         time: formattedTime
     };
     try {
-        // Send POST request to Django API
         const response = await fetch('/api/todos/', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: getAuthHeaders(),
             body: JSON.stringify(todoItem)
         });
         console.log('Todo item added successfully.')
@@ -149,6 +149,45 @@ const createTodoItem = async () => {
     }
     renderToDoList();
     inputElement.value = "";
+}
+
+//TODO לא סידרתי כתובת ופנוקציה למחיקת משתמש
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('delete-account-button').addEventListener('click', deleteAccountButton);
+});
+
+function deleteAccountButton() {
+    const password = prompt("Please enter your password to confirm account deletion:");
+    if (!password) {
+        alert("Account deletion cancelled.");
+        return;
+    }
+
+    const token = localStorage.getItem("token");
+
+    fetch("/api/users/delete-account/", {
+        method: "DELETE",
+        headers: {
+            "Authorization": `Token ${token}`,
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ password: password }) 
+    })
+    .then(response => {
+        if (response.ok) {
+            alert("Your account and all your tasks have been deleted successfully.");
+            localStorage.clear(); 
+            window.location.href = "/login/"; 
+        } else {
+            return response.json().then(data => {
+                alert(data.error || "Failed to delete account. Please check your password.");
+            });
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        alert("Sorry but yet, no one allowd to leave us (עוד לא עשיתי את המחיקה).");
+    });
 }
 
 renderToDoList();
