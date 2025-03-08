@@ -1,4 +1,4 @@
-python manage.py runserver      --- להריץ את השרת---
+"""To Download and run the Project follow SetupGuide.txt"""
 
 ---ניתן להישתמש בשליחת בקשה עם הכתובת אייפי ופורט שנקבל לדף הבית---
 
