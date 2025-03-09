@@ -10,11 +10,19 @@
     pip install -r requirements.txt
 
 # create .env and set email work
-    EMAIL_HOST=smtp.gmail.com
-    EMAIL_PORT=587
-    EMAIL_USE_TLS=True
-    EMAIL_HOST_USER=your_email@gmail.com
-    EMAIL_HOST_PASSWORD=your_app_password
+    # Database configuration
+        DB_USER=postgres
+        DB_PASSWORD=postgres
+        DB_NAME=postgres
+        DB_HOST=localhost
+        DB_PORT=5432
+
+    # Email configuration
+        EMAIL_HOST=smtp.gmail.com
+        EMAIL_PORT=587
+        EMAIL_USE_TLS=True
+        EMAIL_HOST_USER=your_email@gmail.com
+        EMAIL_HOST_PASSWORD=your_app_password
 
 # make migrate and run server
     python manage.py migrate
