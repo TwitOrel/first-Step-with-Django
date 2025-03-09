@@ -20,6 +20,8 @@ from django.utils.http import urlsafe_base64_decode
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+import os
+from dotenv import load_dotenv
 
 
 
@@ -85,8 +87,8 @@ def reset_password_request(request):
     send_mail(
         subject,
         message,
-        'oreltwito3@gmail.com', 
-        [email],
+        from_email=os.getenv('EMAIL_HOST_USER'),
+        recipient_list=[email],
         fail_silently=False,
     )
 
